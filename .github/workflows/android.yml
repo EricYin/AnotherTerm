@@ -1,8 +1,8 @@
 name: Build AnotherTerm
 
 on:
-  workflow_dispatch: 
-  
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,7 +11,7 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        submodules: 'recursive' # 确保拉取项目可能包含的子模块
+        submodules: 'recursive'
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -26,8 +26,9 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug --stacktrace
 
-    - name: Upload APK Artifact
+    - name: Upload All Flavor APKs
       uses: actions/upload-artifact@v4
       with:
-        name: AnotherTerm-Debug-APK
-        path: app/build/outputs/apk/debug/*.apk
+        name: AnotherTerm-MultiFlavors-APKs
+        # 核心修复：使用双星号通配符，地毯式轰炸并抓取任意 flavor 目录下的所有 apk
+        path: app/build/outputs/apk/**/debug/*.apk
